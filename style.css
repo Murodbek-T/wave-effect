@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000;
+}
+
+:root {
+  --transition: cubic-bezier(0.1, 0.7, 0, 1);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.wrapper_items {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  perspective: calc(10px * 35);
+  width: 70%;
+}
+
+.item {
+  width: 70px;
+  height: 350px;
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #222;
+
+  cursor: pointer;
+
+  filter: grayscale(1) brightness(0.5);
+
+  transition: transform 1.25s var(--transition), filter 3s var(--transition),
+    width 1.25s var(--transition);
+
+  will-change: transform, width, filter;
+}
+
+/* When hover */
+
+.wrapper_items .item:hover {
+  filter: none;
+  transform: translateZ(100px);
+}
+
+/* Jumping problem solution here */
+
+.item::before,
+.item::after {
+  content: "";
+  height: 100%;
+  width: 30px;
+  position: absolute;
+  right: -30px;
+}
+
+.item::before {
+  left: -30px;
+}
+
+/* Wave effect */
+
+.wrapper_items .item:hover + * {
+  transform: translateZ(70px) rotateY(35deg);
+  z-index: -1;
+}
+
+.wrapper_items .item:hover + * + * {
+  transform: translateZ(20px) rotateY(25deg);
+  z-index: -2;
+}
+
+.wrapper_items .item:has(+ :hover) {
+  transform: translateZ(70px) rotateY(-35deg);
+}
+
+.wrapper_items .item:has(+ * + :hover) {
+  transform: translateZ(20px) rotateY(-25deg);
+}
+
+.show {
+  width: 28vw;
+  filter: none;
+  transform: translateZ(30px);
+}
